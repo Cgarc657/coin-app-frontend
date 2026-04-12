@@ -56,8 +56,8 @@ h1 {
 }
 
 .coin-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 </style>
