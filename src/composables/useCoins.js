@@ -14,6 +14,7 @@ export function useCoins() {
       const response = await fetch(
         'https://coin-hub-app.expense-splitter-vue.workers.dev/api/coins',
       )
+
       const data = await response.json()
       coins.value = data.data
     } catch {
@@ -24,8 +25,16 @@ export function useCoins() {
   }
 
   const filteredCoins = computed(() => {
-    return coins.value.filter((coin) =>
-      coin.name.toLowerCase().includes(search.value.toLowerCase()),
+    const searchValue = search.value.trim().toLowerCase()
+
+    if (!searchValue) {
+      return coins.value.slice(0, 5)
+    }
+
+    return coins.value.filter(
+      (coin) =>
+        coin.name.toLowerCase().includes(searchValue) ||
+        coin.symbol.toLowerCase().includes(searchValue),
     )
   })
 
