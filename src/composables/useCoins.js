@@ -28,7 +28,7 @@ export function useCoins() {
     const searchValue = search.value.trim().toLowerCase()
 
     if (!searchValue) {
-      return coins.value.slice(0, 5)
+      return coins.value.slice(0, 6)
     }
 
     return coins.value.filter(
