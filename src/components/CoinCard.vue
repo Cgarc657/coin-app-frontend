@@ -5,12 +5,17 @@ defineProps({
 </script>
 
 <template>
-  <div class="coin-card">
-    <h2>{{ coin.name }}</h2>
-    <p>{{ coin.symbol }}</p>
-    <p>${{ coin.price }}</p>
-    <p>{{ coin.change24h }}%</p>
-  </div>
+  <RouterLink :to="`/coin/${coin.id}`" class="coin-link">
+    <div class="coin-card">
+      <h2>{{ coin.name }}</h2>
+      <p>{{ coin.symbol }}</p>
+      <p>${{ coin.price }}</p>
+      <p :class="coin.change24h >= 0 ? 'up' : 'down'">
+        {{ coin.change24h >= 0 ? '▲' : '▼' }}
+        {{ coin.change24h }}%
+      </p>
+    </div>
+  </RouterLink>
 </template>
 
 <style scoped>
@@ -21,6 +26,15 @@ defineProps({
   min-height: 180px;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.coin-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.coin-card:hover {
+  transform: translateY(-4px);
 }
 
 .symbol {
@@ -35,6 +49,11 @@ defineProps({
 
 .up {
   color: green;
+  font-weight: bold;
+}
+
+.down {
+  color: red;
   font-weight: bold;
 }
 
