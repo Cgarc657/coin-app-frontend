@@ -11,7 +11,7 @@ const fetchFavorites = async () => {
 
   try {
     const response = await fetch(
-      'https://coin-hub-app.expense-splitter-vue.workers.dev/api/favorites/1',
+      'https://coin-hub-app.expense-splitter-vue.workers.dev/api/favorites',
     )
 
     const data = await response.json()

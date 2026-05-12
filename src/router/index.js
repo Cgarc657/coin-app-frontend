@@ -3,6 +3,7 @@ import HomePage from '@/views/HomePage.vue'
 import LoginPage from '@/views/LoginPage.vue'
 import RegisterPage from '@/views/RegisterPage.vue'
 import CoinDetailPage from '@/views/CoinDetailPage.vue'
+import FavoritesPage from '@/views/FavoritesPage.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/coin/:id',
     name: 'coin-detail',
     component: CoinDetailPage,
+  },
+  {
+    path: '/favorites',
+    name: 'favorites',
+    component: FavoritesPage,
   },
 ]
 

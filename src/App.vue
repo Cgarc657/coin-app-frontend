@@ -6,6 +6,8 @@
       <RouterLink to="/login">Login</RouterLink>
 
       <RouterLink to="/register">Register</RouterLink>
+
+      <RouterLink to="/favorites"> Favorites </RouterLink>
     </nav>
 
     <RouterView />
