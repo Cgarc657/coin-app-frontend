@@ -1,5 +1,10 @@
 <script setup>
 import { ref } from 'vue'
+import { useAuth } from '@/composables/useAuth'
+import { useRouter } from 'vue-router'
+const { login } = useAuth()
+
+const router = useRouter()
 
 const email = ref('')
 const password = ref('')
@@ -33,6 +38,10 @@ const loginUser = async () => {
       error.value = data.error.message
       return
     }
+
+    login(data.data)
+
+    router.push('/')
 
     message.value = 'Login successful.'
     email.value = ''
