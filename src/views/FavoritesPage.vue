@@ -1,5 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useAuth } from '@/composables/useAuth'
+
+const { currentUser } = useAuth()
 
 const favorites = ref([])
 const loading = ref(false)
@@ -11,7 +14,7 @@ const fetchFavorites = async () => {
 
   try {
     const response = await fetch(
-      'https://coin-hub-app.expense-splitter-vue.workers.dev/api/favorites',
+      `https://coin-hub-app.expense-splitter-vue.workers.dev/api/favorites?userId=${currentUser.value.id}`,
     )
 
     const data = await response.json()
@@ -21,6 +24,21 @@ const fetchFavorites = async () => {
     error.value = 'Could not load favorites.'
   } finally {
     loading.value = false
+  }
+}
+
+const removeFavorite = async (coinId) => {
+  try {
+    await fetch(
+      `https://coin-hub-app.expense-splitter-vue.workers.dev/api/favorites/${coinId}?userId=${currentUser.value.id}`,
+      {
+        method: 'DELETE',
+      },
+    )
+
+    favorites.value = favorites.value.filter((favorite) => favorite.id !== coinId)
+  } catch {
+    error.value = 'Could not remove favorite.'
   }
 }
 
@@ -44,6 +62,8 @@ onMounted(fetchFavorites)
         <p>{{ favorite.symbol }}</p>
 
         <p>${{ favorite.price }}</p>
+
+        <button @click="removeFavorite(favorite.id)">Remove Favorite</button>
       </div>
     </div>
 

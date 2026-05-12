@@ -1,6 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
+
+const { currentUser } = useAuth()
 
 const route = useRoute()
 
@@ -43,7 +46,7 @@ const saveFavorite = async () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: 1,
+          userId: currentUser.value.id,
           coinId: coin.value.id,
         }),
       },
