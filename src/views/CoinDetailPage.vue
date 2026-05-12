@@ -8,6 +8,9 @@ const coin = ref(null)
 const loading = ref(false)
 const error = ref('')
 
+const favoriteMessage = ref('')
+const favoriteError = ref('')
+
 const fetchCoin = async () => {
   loading.value = true
   error.value = ''
@@ -24,6 +27,38 @@ const fetchCoin = async () => {
     error.value = 'Could not load coin.'
   } finally {
     loading.value = false
+  }
+}
+
+const saveFavorite = async () => {
+  favoriteMessage.value = ''
+  favoriteError.value = ''
+
+  try {
+    const response = await fetch(
+      'https://coin-hub-app.expense-splitter-vue.workers.dev/api/favorites',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: 1,
+          coinId: coin.value.id,
+        }),
+      },
+    )
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      favoriteError.value = data.error.message
+      return
+    }
+
+    favoriteMessage.value = 'Coin added to favorites.'
+  } catch {
+    favoriteError.value = 'Could not save favorite.'
   }
 }
 
@@ -49,6 +84,16 @@ onMounted(fetchCoin)
         {{ coin.change24h >= 0 ? '▲' : '▼' }}
         {{ coin.change24h }}%
       </p>
+
+      <button @click="saveFavorite">Save Favorite</button>
+
+      <p v-if="favoriteMessage">
+        {{ favoriteMessage }}
+      </p>
+
+      <p v-if="favoriteError">
+        {{ favoriteError }}
+      </p>
     </div>
   </div>
 </template>
@@ -66,6 +111,16 @@ onMounted(fetchCoin)
   border-radius: 14px;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
 }
 
 .up {
