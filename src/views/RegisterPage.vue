@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 
-const name = ref('')
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
@@ -22,7 +21,6 @@ const registerUser = async () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: name.value,
           email: email.value,
           password: password.value,
         }),
@@ -31,13 +29,15 @@ const registerUser = async () => {
 
     const data = await response.json()
 
+    console.log(response)
+    console.log(data)
+
     if (!response.ok) {
       error.value = data.error.message
       return
     }
 
     message.value = 'Account created successfully.'
-    name.value = ''
     email.value = ''
     password.value = ''
   } catch {
@@ -54,8 +54,6 @@ const registerUser = async () => {
       <h1>Create Account</h1>
 
       <form @submit.prevent="registerUser">
-        <input v-model="name" type="text" placeholder="Name" />
-
         <input v-model="email" type="email" placeholder="Email" />
 
         <input v-model="password" type="password" placeholder="Password" />
